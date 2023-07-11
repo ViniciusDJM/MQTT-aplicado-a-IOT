@@ -1,0 +1,404 @@
+<Manager>:
+    DummyScreen:
+    ConScreen:
+        name: 'connect'
+    TopicScreen:
+        name: 'topics'
+
+<ConScreen>:
+
+    FloatLayout:
+        MDIcon:
+            icon: 'video-input-antenna'
+            color: '#673AB7'
+            adaptive_size: True
+            pos_hint: {"center_x": .5, "center_y": .8}
+            allow_selection: True
+            font_size: '80sp' 
+        MDTextField:
+            hint_text: "Broker"
+            pos_hint: {'center_x': .5,'center_y': .65}
+            size_hint_x: .6
+            id: mqtt
+        MDTextField:
+            hint_text: "Porta"
+            pos_hint: {'center_x': .5,'center_y': .55}
+            size_hint_x: .6
+            id: porta
+        MDTextField:
+            hint_text: "Usuário"
+            pos_hint: {'center_x': .5,'center_y': .45}
+            size_hint_x: .6
+            id: user
+        MDTextField:
+            hint_text: "Senha"
+            pos_hint: {'center_x': .5,'center_y': .35}
+            size_hint_x: .6
+            id: password
+        MDTextField:
+            hint_text: "ID"
+            pos_hint: {'center_x': .5,'center_y': .25}
+            size_hint_x: .6
+            id: cli
+        MDLabel:
+            text: ''
+            pos_hint: {'center_x': .5,'center_y': .2}
+            id: msg
+            font_style: 'Caption'
+            halign: "center"
+            theme_text_color: 'Custom'
+            text_color: 1, 0, 0, 1
+        MDRoundFlatButton:
+            text: "Connect"
+            pos_hint: {'center_x': .5,'center_y': .1}
+            size_hint_x: .4
+            padding_vertical: "8dp"     
+            theme_text_color: 'Custom'
+            text_color: '#673AB7'      
+            on_release: root.connect_broker()
+
+<TopicScreen>:
+    MDFloatLayout:
+        orientation: "vertical"
+
+        MDToolbar:
+            title: "Dashboard"
+            left_action_items: [["arrow-left", lambda x: root.back_start()]]
+            right_action_items: [["cog-outline", lambda x: x]]
+            pos_hint: {'top': 1}
+            md_bg_color: rgba(18, 18, 18, 1)
+        MDFloatLayout:
+            Topic:
+                id: sensor_an
+                radius: dp(8)
+                text_name: 'SENSOR_A0'
+                text_sensor: '0.00'
+                text_unidade: 'Volts'
+                icon_name: 'flash'
+                pos_hint: {'center_x': 0.166,'center_y': 0.764}
+            Digitais:
+                id: sensor_digital
+            Led:
+                id: led
+                led_icon: 'led-off'
+            Time:
+                id: time
+            MDBoxLayout:
+                padding: ['40dp', '0dp', '40dp', '15dp']
+                Card_graph:
+                    id: g
+            
+
+<Led>:
+    orientation: 'vertical'
+    size_hint_y:None
+    size_hint_x:None
+    height:'200dp'
+    width:'245dp'
+    radius: dp(8)
+    pos_hint: {'center_x': 0.836,'center_y': 0.595}
+    led_icon: ''
+    activity: False
+    MDBoxLayout:
+        orientation: 'vertical'
+        size_hint_y: .2
+        MDLabel:
+            text: 'LED'
+            halign: 'center'
+            font_style: 'Subtitle1'
+            size_hint_y: .2
+            theme_text_color: 'Custom'
+            text_color: '#673AB7'
+    MDFloatLayout:
+
+        MDIcon:
+            icon: root.led_icon
+            color: '#673AB7'
+            adaptive_size: True
+            pos_hint: {"center_x": .5, "center_y": .67}
+            allow_selection: True
+            font_size: '100sp' 
+        
+        MDRoundFlatButton:
+            text: "Turn"
+            size_hint_x: .6
+            pos_hint: {'center_x': .5, 'center_y': .15}
+            theme_text_color: 'Custom'
+            text_color: '#673AB7'
+            on_release: root.set_led()
+
+<Time>:
+    radius: dp(8)
+    orientation: 'vertical'
+    size_hint_y:None
+    size_hint_x:None
+    height:'142dp'
+    width:'250dp'
+    value_msg: 5
+    pos_hint: {'center_x': 0.166,'center_y': 0.559}
+    MDBoxLayout:
+        orientation: 'vertical'
+        size_hint_y: .25
+        MDLabel:
+            text: 'TIME'
+            halign: 'center'
+            font_style: 'Subtitle1'
+            
+            theme_text_color: 'Custom'
+            text_color: '#673AB7'
+    MDFloatLayout:
+
+        MDSlider:
+            id: slider_time
+            min: 5
+            max: 60
+            step: 5
+            value: root.value_msg
+            pos_hint: {'center_x': .5,'center_y': .78}
+            size_hint_x: .8
+            size_hint_y: .1
+        MDLabel:
+            text: "seconds"
+            pos_hint: {'center_x': .5,'center_y': .62}
+            halign: 'center'
+            font_style: 'Caption'          
+            theme_text_color: 'Custom'
+            text_color: '#673AB7'
+        MDRoundFlatButton:
+            text: "Publish"
+            size_hint_x: .6
+            pos_hint: {'center_x': .5,'center_y': .25}
+            theme_text_color: 'Custom'
+            text_color: '#673AB7'
+
+            on_release: root.set_time()
+
+<Digitais>:
+    radius: dp(8)
+    orientation: 'vertical'
+    size_hint_y:None
+    size_hint_x:None
+    height:'320dp'
+    width:'400dp'
+    pos_hint: {'center_x': 0.502,'center_y': 0.67}
+    color_d0: '#673AB7'
+    color_d1: '#673AB7'
+    color_d2: '#673AB7'
+    color_d3: '#673AB7'
+    color_d4: '#673AB7'
+    color_d5: '#673AB7'
+    color_d6: '#673AB7'
+    MDBoxLayout:
+        orientation: 'vertical'
+        size_hint_y: .2
+        MDLabel:
+            text: 'DIGITAL_SENSORS'
+            halign: 'center'
+            font_style: 'Subtitle1'
+            size_hint_y: .2
+            theme_text_color: 'Custom'
+            text_color: '#673AB7'
+    MDFloatLayout:
+        MDFloatLayout:
+            orientation: 'vertical'
+            size_hint: .3, .3
+            pos_hint: {'center_x': .18,'center_y': .85}
+            MDLabel:
+                text: 'D0'
+                halign: 'center'
+                font_style: 'Subtitle1'
+                theme_text_color: 'Custom'
+                text_color: '#673AB7'
+                pos_hint: {'center_x': .5,'center_y': .9}
+            MDIcon:
+                icon: 'radiobox-marked'
+                color: root.color_d0
+                adaptive_size: True
+                pos_hint: {"center_x": .5, "center_y": .4}
+                allow_selection: True
+                font_size: '50sp' 
+
+        MDFloatLayout:
+            orientation: 'vertical'
+            size_hint: .3, .3
+            pos_hint: {'center_x': .18,'center_y': .52}
+            MDLabel:
+                text: 'D1'
+                halign: 'center'
+                font_style: 'Subtitle1'
+                theme_text_color: 'Custom'
+                text_color: '#673AB7'
+                pos_hint: {'center_x': .5,'center_y': .9}
+            MDIcon:
+                icon: 'radiobox-marked'
+                color: root.color_d1
+                adaptive_size: True
+                pos_hint: {"center_x": .5, "center_y": .4}
+                allow_selection: True
+                font_size: '50sp' 
+
+        MDFloatLayout:
+            orientation: 'vertical'
+            size_hint: .3, .3
+            pos_hint: {'center_x': .18,'center_y': .19}
+            MDLabel:
+                text: 'D2'
+                halign: 'center'
+                font_style: 'Subtitle1'
+                theme_text_color: 'Custom'
+                text_color: '#673AB7'
+                pos_hint: {'center_x': .5,'center_y': .9}
+            MDIcon:
+                icon: 'radiobox-marked'
+                color: root.color_d2
+                adaptive_size: True
+                pos_hint: {"center_x": .5, "center_y": .4}
+                allow_selection: True
+                font_size: '50sp' 
+
+        MDFloatLayout:
+            orientation: 'vertical'
+            size_hint: .3, .3
+            pos_hint: {'center_x': .82,'center_y': .85}
+            MDLabel:
+                text: 'D3'
+                halign: 'center'
+                font_style: 'Subtitle1'
+                theme_text_color: 'Custom'
+                text_color: '#673AB7'
+                pos_hint: {'center_x': .5,'center_y': .9}
+            MDIcon:
+                icon: 'radiobox-marked'
+                color: root.color_d3
+                adaptive_size: True
+                pos_hint: {"center_x": .5, "center_y": .4}
+                allow_selection: True
+                font_size: '50sp' 
+
+        MDFloatLayout:
+            orientation: 'vertical'
+            size_hint: .3, .3
+            pos_hint: {'center_x': .82,'center_y': .52}
+            MDLabel:
+                text: 'D4'
+                halign: 'center'
+                font_style: 'Subtitle1'
+                theme_text_color: 'Custom'
+                text_color: '#673AB7'
+                pos_hint: {'center_x': .5,'center_y': .9}
+            MDIcon:
+                icon: 'radiobox-marked'
+                color: root.color_d4
+                adaptive_size: True
+                pos_hint: {"center_x": .5, "center_y": .4}
+                allow_selection: True
+                font_size: '50sp' 
+
+        MDFloatLayout:
+            orientation: 'vertical'
+            size_hint: .3, .3
+            pos_hint: {'center_x': .82,'center_y': .19}
+            MDLabel:
+                text: 'D5'
+                halign: 'center'
+                font_style: 'Subtitle1'
+                theme_text_color: 'Custom'
+                text_color: '#673AB7'
+                pos_hint: {'center_x': .5,'center_y': .9}
+            MDIcon:
+                icon: 'radiobox-marked'
+                color: root.color_d5
+                adaptive_size: True
+                pos_hint: {"center_x": .5, "center_y": .4}
+                allow_selection: True
+                font_size: '50sp' 
+
+        MDFloatLayout:
+            orientation: 'vertical'
+            size_hint: .3, .3
+            pos_hint: {'center_x': .5,'center_y': .19}
+            MDLabel:
+                text: 'D6'
+                halign: 'center'
+                font_style: 'Subtitle1'
+                theme_text_color: 'Custom'
+                text_color: '#673AB7'
+                pos_hint: {'center_x': .5,'center_y': .9}
+            MDIcon:
+                icon: 'radiobox-marked'
+                color: root.color_d6
+                adaptive_size: True
+                pos_hint: {"center_x": .5, "center_y": .4}
+                allow_selection: True
+                font_size: '50sp' 
+
+        MDIcon:
+            icon: 'square-wave'
+            color: '#673AB7'
+            adaptive_size: True
+            pos_hint: {"center_x": .5, "center_y": .7}
+            allow_selection: True
+            font_size: '80sp' 
+        
+
+<Topic>:
+    orientation: 'vertical'
+    size_hint_y:None
+    size_hint_x:None
+    height:'167dp'
+    width:'250dp'
+    text_unidade: ''
+    text_name: ''
+    text_sensor: ''
+    icon_name: ''
+    MDBoxLayout:
+        orientation: 'vertical'
+        size_hint_y: .3
+        MDLabel:
+            text: root.text_name
+            halign: 'center'
+            font_style: 'Subtitle1'
+            size_hint_y: .2
+            theme_text_color: 'Custom'
+            text_color: '#673AB7'
+    MDFloatLayout:
+
+        MDIcon:
+            icon: root.icon_name
+            color: '#673AB7'
+            adaptive_size: True
+            pos_hint: {"center_x": .5, "center_y": .8}
+            allow_selection: True
+            font_size: '40sp' 
+
+        MDLabel:
+            text: root.text_sensor
+            halign: 'center'
+            font_style: 'H3'
+            theme_text_color: "Custom"
+            text_color: '#673AB7'
+            pos_hint: {'center_x': .5,'center_y': .4}
+        
+        MDLabel:
+            text: root.text_unidade
+            halign: 'center'
+            font_style: 'Subtitle2'
+            theme_text_color: "Custom"
+            text_color: '#673AB7'
+            pos_hint: {'center_x': .5,'center_y': .2}
+
+<Graphics>:
+    
+
+<Card_graph>:
+    radius: dp(8)
+    orientation: 'vertical'
+    size_hint: .6, .45
+    
+    MDLabel:
+        size_hint_y: .15
+        text: 'ANALOG_HISTORY'
+        halign: 'center'
+        font_style: 'Subtitle1'
+        theme_text_color: 'Custom'
+        text_color: '#673AB7'
